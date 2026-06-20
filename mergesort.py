@@ -1,51 +1,69 @@
-def ASSIGNMENT(new_list, i, old_list, j):
-    new_list[i] = old_list[j]
-
-
-def mergeSort(list_to_sort_by_merge):
-    if (
-        len(list_to_sort_by_merge) > 1
-        and not len(list_to_sort_by_merge) < 1
-        and len(list_to_sort_by_merge) != 0
-    ):
-        mid = len(list_to_sort_by_merge) // 2
-        left = list_to_sort_by_merge[:mid]
-        right = list_to_sort_by_merge[mid:]
-
-        mergeSort(left)
-        mergeSort(right)
-
-        l = 0
-        r = 0
-        i = 0
-
-        while l < len(left) and r < len(right):
-            if left[l] <= right[r]:
-                ASSIGNMENT(new_list=list_to_sort_by_merge, i=i, old_list=left, j=l)
-                l += 1
-            else:
-                ASSIGNMENT(new_list=list_to_sort_by_merge, i=i, old_list=right, j=r)
-                r += 1
-            i += 1
-
-        while l < len(left):
-            list_to_sort_by_merge[i] = left[l]
-            l += 1
-            i += 1
-
-        while r < len(right):
-            list_to_sort_by_merge[i] = right[r]
-            r += 1
-            i += 1
-
+"""Merge sort implementation with a before/after visualization."""
 
 import matplotlib.pyplot as plt
 
-my_list = [54, 26, 93, 17, 77, 31, 44, 55, 20]
-x = range(len(my_list))
-plt.plot(x, my_list)
-plt.show()
-mergeSort(my_list)
-x = range(len(my_list))
-plt.plot(x, my_list)
-plt.show()
+
+def merge_sort(values):
+    """Sort a list in place using the merge sort algorithm.
+
+    The list is recursively split in half until each sublist has at
+    most one element (already sorted by definition). The sublists are
+    then merged back together in sorted order.
+    """
+    if len(values) <= 1:
+        return
+
+    mid = len(values) // 2
+    left = values[:mid]
+    right = values[mid:]
+
+    merge_sort(left)
+    merge_sort(right)
+
+    _merge(values, left, right)
+
+
+def _merge(values, left, right):
+    """Merge two sorted lists (left, right) back into `values`.
+
+    Repeatedly takes the smaller of the two current front elements
+    from `left`/`right` and appends it to `values`, until one of the
+    two sublists is exhausted. Any remaining elements are appended
+    in order.
+    """
+    left_index = 0
+    right_index = 0
+    merged_index = 0
+
+    while left_index < len(left) and right_index < len(right):
+        if left[left_index] <= right[right_index]:
+            values[merged_index] = left[left_index]
+            left_index += 1
+        else:
+            values[merged_index] = right[right_index]
+            right_index += 1
+        merged_index += 1
+
+    while left_index < len(left):
+        values[merged_index] = left[left_index]
+        left_index += 1
+        merged_index += 1
+
+    while right_index < len(right):
+        values[merged_index] = right[right_index]
+        right_index += 1
+        merged_index += 1
+
+
+def plot_values(values):
+    """Display a simple line plot of the given values."""
+    plt.plot(range(len(values)), values)
+    plt.show()
+
+
+if __name__ == "__main__":
+    my_list = [54, 26, 93, 17, 77, 31, 44, 55, 20]
+
+    plot_values(my_list)
+    merge_sort(my_list)
+    plot_values(my_list)
