@@ -55,15 +55,19 @@ def _merge(values, left, right):
         merged_index += 1
 
 
-def plot_values(values):
-    """Display a simple line plot of the given values."""
-    plt.plot(range(len(values)), values)
+
+def plot_values(values, title):
+    """Display a bar chart of the given values with a descriptive title."""
+    plt.bar(range(len(values)), values)
+    plt.title(title)
+    plt.xlabel("Index")
+    plt.ylabel("Value")
     plt.show()
 
 
 if __name__ == "__main__":
     my_list = [54, 26, 93, 17, 77, 31, 44, 55, 20]
 
-    plot_values(my_list)
+    plot_values(my_list, "Before Sorting")
     merge_sort(my_list)
-    plot_values(my_list)
+    plot_values(my_list, "After Sorting")
